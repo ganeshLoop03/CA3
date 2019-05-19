@@ -45,7 +45,7 @@ str(Overweight_obesity)
 # Ha: There is a significant difference in the Obesity rate among male and Female male and Female population during period 2018
 
 # creating subsets for two different groups
-Male <- subset(Overweight_obesity,  Gender == "Male", select=c(Gender,vbmi))
+Male <- subset(Overweight_obesity,  Gender == "Male", select=c(Gender, bmi))
 Male
 str(Male)
 
@@ -140,12 +140,12 @@ d
 
 
 # to test power
-power.t.test(n=5000,delta=0.05,sd=2.6, type = c("two.sample"))
+power.t.test(n=5000,delta=0.05,sd=SD, type = c("two.sample"))
 
-# power = 0.15
+# power = 0.89
 
 # to determine sample size
-pwrTest <- power.t.test(delta=0.05, sd=SD, power=0.15)
+pwrTest <- power.t.test(delta=0.05, sd=SD, power=0.89)
 pwrTest
 plot(pwrTest)
 
@@ -240,9 +240,17 @@ se.boot
 CI.boot <-c(psigma-2*se.boot, psigma+2*se.boot)
 CI.boot
 
+sigmahat <- Ybar-Xbar
+Fe <- filter(Overweight_obesity, Gender=="Female")$bmi
+M <- filter(Overweight_obesity, Gender=="Male")$bmi
+S.F <- sum((Fe-Ybar)^2/nrow(filter(Overweight_obesity, Gender=="Female")))
+S.M <- sum((M-Xbar)^2/nrow(filter(Overweight_obesity, Gender=="Male")))
+sehat <- sqrt(S.F/nrow(filter(Overweight_obesity, Gender=="Female"))+S.M/nrow(filter(Overweight_obesity, Gender=="Male")))
+CI.normal <- c(sigmahat-2*sehat, sigmahat+2*sehat)
+
 
 # Wald test of hypothesis
-sigmahat <Ybar -Xbar
+sigmahat <- Ybar -Xbar
 W <- sigmahat/sehat
 pvalue <- 2*pnorm(-abs(W))
 pvalue
