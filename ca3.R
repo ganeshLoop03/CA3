@@ -22,7 +22,8 @@ BMI = function(Height, Weight){
 # testimg bmi function
 BMI(71,180)
 
-
+# adding bmi column in dataframe
+Height_Weight_Data$bmi = BMI(Height_Weight_Data$Weight,Height_Weight_Data$Height)
 
 # creating subset to get desired columns
 Overweight_obesity <- subset (Height_Weight_Data ,select=c(Gender, bmi))
